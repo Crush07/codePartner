@@ -2,6 +2,8 @@ import java.awt.*;
 import java.awt.event.InputMethodEvent;
 import java.awt.event.InputMethodListener;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 public class FunctionNameWindow extends JFrame {
     private JTextField inputField;
@@ -18,14 +20,20 @@ public class FunctionNameWindow extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(displayArea);
 
-        inputField.addInputMethodListener(new InputMethodListener() {
-            public void caretPositionChanged(InputMethodEvent e) {
-                // 处理光标位置变化事件
-                String functionName = inputField.getText();
-                displayArea.setText(functionName);
+        inputField.getDocument().addDocumentListener(new DocumentListener() {
+            public void insertUpdate(DocumentEvent e) {
+                updateText();
             }
 
-            public void inputMethodTextChanged(InputMethodEvent e) {
+            public void removeUpdate(DocumentEvent e) {
+                updateText();
+            }
+
+            public void changedUpdate(DocumentEvent e) {
+                updateText();
+            }
+
+            private void updateText() {
                 String functionName = inputField.getText();
                 displayArea.setText(functionName);
             }
