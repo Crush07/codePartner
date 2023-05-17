@@ -1,5 +1,7 @@
 package org.example;
 
+import org.example.util.ShowMenuUtil;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,13 +11,9 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
-public class FunctionNameWindow extends JFrame {
+public class FunctionNameWindow extends JPanel {
 
     public FunctionNameWindow() {
-        setTitle("Function Name Window");
-        setSize(400, 200);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
         // 创建组件
         JLabel returnLabel = new JLabel("返回值");
         JTextField returnField = new JTextField(20);
@@ -41,8 +39,15 @@ public class FunctionNameWindow extends JFrame {
         button.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 // 当按钮被点击时执行的代码
-                String functionName = returnField.getText();
-                displayArea.setText(functionName);
+                String sb = "实现一个函数：函数名为" +
+                        functionField.getText() +
+                        "，参数为" +
+                        paramField.getText() +
+                        "，返回值为" +
+                        returnField.getText() +
+                        "，功能为" +
+                        descriptionField.getText();
+                displayArea.setText(sb);
             }
         });
 
@@ -108,6 +113,10 @@ public class FunctionNameWindow extends JFrame {
         gridBagLayout.setConstraints(button, gbc);
         add(button, gbc);
 
+        //给button添加右键菜单
+        ShowMenuUtil.showMenu(button);
+
+
         gbc.gridx = 0;
         gbc.gridy = 5;
         gbc.fill = GridBagConstraints.BOTH;
@@ -119,11 +128,15 @@ public class FunctionNameWindow extends JFrame {
         gridBagLayout.setConstraints(scrollPane, gbc);
         add(scrollPane, gbc);
 
-        setResizable(true);
         setVisible(true);
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(FunctionNameWindow::new);
+        JFrame frame = new JFrame("FunctionNameWindow");
+        frame.setContentPane(new FunctionNameWindow());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
     }
+
 }
