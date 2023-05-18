@@ -1,21 +1,28 @@
 package org.example;
 
 import org.example.component.table.TableListNav;
+import org.example.service.Select;
 import org.example.util.ShowMenuUtil;
 
 import javax.swing.*;
 import java.awt.*;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public class MainWindow extends JFrame {
 
-    public MainWindow(){
-        setSize(400, 200);
+    public MainWindow() throws SQLException {
+        setSize(600, 400);
 
         //groupLayout布局
         GridBagLayout gridBagLayout = new GridBagLayout();
         getContentPane().setLayout(gridBagLayout);
 
+        //创建表导航栏
         TableListNav nav = new TableListNav();
+        Select select = new Select("jdbc:mysql://localhost:3306/education?useSSL=false&useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&serverTimezone=Asia/Shanghai", "root", "root", "education");
+        nav.addAll(select.selectAllTableName());
 
         //功能区
         JPanel function = new JPanel();
@@ -49,7 +56,7 @@ public class MainWindow extends JFrame {
     }
 
     //main方法
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         //创建窗口
         new MainWindow();
     }
